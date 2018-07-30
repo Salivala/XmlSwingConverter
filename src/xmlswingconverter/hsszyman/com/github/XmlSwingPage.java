@@ -11,13 +11,10 @@ public class XmlSwingPage {
         frame = new JFrame(name);
     }
 
-    void setLayout(BorderLayout layout) {
+    void setLayout(LayoutManager layout) {
         jpanel.setLayout(layout);
     }
 
-    void setLayout(FlowLayout layout) {
-        jpanel.setLayout(layout);
-    }
     public boolean setVisible() {
         if (frame != null) {
             frame.setVisible(true);

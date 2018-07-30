@@ -1,12 +1,7 @@
 <XmlSwingPage title="Intervallic">
     <BorderLayout>
-        <TOP>
+        <BorderLayout.TOP>
             <JLabel title="Intervallic" />
-        </TOP>
-        <Center>
-            <FlowLayout>
-                <JButton name="hastohavename" action="getName"> </JButton>
-            </FlowLayout>
-        </Center>
+        </BorderLayout.TOP>
     </BorderLayout>
 </XmlSwingPage>

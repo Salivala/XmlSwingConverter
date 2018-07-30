@@ -3,9 +3,10 @@ package xmlswingconverter.hsszyman.com.github;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
+import java.util.Map;
 
 public abstract class XSLayout {
-    HashMap<String, Component> childComponents = new HashMap<>();
+    Map<String, Component> childComponents = new HashMap<>();
     private static int xsLayoutCount = 0;
     abstract JPanel producePanel();
 
