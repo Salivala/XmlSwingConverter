@@ -37,6 +37,8 @@ Basic Functionality
     - FlowLayout
 * Containers
     - JButton
-    - JLabel (Inner TextNode as jlabel title)
+    - JLabel (Inner TextNode as JLabel title)
+    - JTextField
+    - JList (Only for strings)
  * Actions
     - JButton
