@@ -10,17 +10,70 @@
             </FlowLayout>
         </BorderLayout.NORTH>
         <BorderLayout.CENTER>
-            <JList>
-                <Str>what</Str>
-                <Str>what</Str>
-                <Str>what</Str>
-                <Str>what</Str>
-                <Str>what</Str>
-            </JList>
+            <FlowLayout>
+                <JList>
+                    <Str name="billy">what</Str>
+                    <Str>what</Str>
+                    <Str>what</Str>
+                    <Str>what</Str>
+                    <Str>what</Str>
+                </JList>
+                <JList>
+                    <Str name="billy">what</Str>
+                    <Str>what</Str>
+                    <Str>what</Str>
+                    <Str>what</Str>
+                    <Str>what</Str>
+                </JList>
+                <JList>
+                    <Str name="billy">what</Str>
+                    <Str>what</Str>
+                    <Str>what</Str>
+                    <Str>what</Str>
+                    <Str>what</Str>
+                </JList>
+                <JList>
+                    <Str name="billy">what</Str>
+                    <Str>what</Str>
+                    <Str>what</Str>
+                    <Str>what</Str>
+                    <Str>what</Str>
+                </JList>
+                <JList>
+                    <Str name="billy">what</Str>
+                    <Str>what</Str>
+                    <Str>what</Str>
+                    <Str>what</Str>
+                    <Str>what</Str>
+                </JList>
+                <JList>
+                    <Str name="billy">what</Str>
+                    <Str>what</Str>
+                    <Str>what</Str>
+                    <Str>what</Str>
+                    <Str>what</Str>
+                </JList>
+                <JList>
+                    <Str name="billy">what</Str>
+                    <Str>what</Str>
+                    <Str>what</Str>
+                    <Str>what</Str>
+                    <Str>what</Str>
+                </JList>
+            </FlowLayout>
         </BorderLayout.CENTER>
         <BorderLayout.SOUTH>
-            <JTextField name="setTitle">
-            </JTextField>
+            <BoxLayout orientation="vertical">
+                <FlowLayout>
+                    <JTextField name="setTitle" columns="9">
+                    </JTextField>
+                </FlowLayout>
+                <FlowLayout>
+                    <JButton name="button" action="go">
+                        Change Title
+                    </JButton>
+                </FlowLayout>
+            </BoxLayout>
         </BorderLayout.SOUTH>
     </BorderLayout>
 </XmlSwingPage>

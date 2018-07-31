@@ -15,14 +15,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
 
 public class XmlSwingConverter {
     private DocumentBuilderFactory builderFactory;
     private DocumentBuilder builder;
     private Document xmlDoc;
     private Map<String, ActionListener> actions;
-    public Map<String, Container> namedContainers = new HashMap<>();
+    public Map<String, Object> namedContainersAndStrings = new HashMap<>();
     private XmlSwingPage page;
     public JFrame frame;
     private Path path;
@@ -76,6 +75,8 @@ public class XmlSwingConverter {
                 return getBorderLayoutPanel(currentParentElem);
             case "FlowLayout":
                 return getFlowLayoutPanel(currentParentElem);
+            case "BoxLayout":
+                return getBoxLayoutPanel(currentParentElem);
             case "JButton":
                 return getJButton(currentParentElem);
             case "JLabel":
@@ -103,7 +104,7 @@ public class XmlSwingConverter {
             field.setColumns(Integer.valueOf(textFieldColumns));
         }
 
-        namedContainers.put(elem.getAttribute("name"), field);
+        namedContainersAndStrings.put(elem.getAttribute("name"), field);
         return field;
     }
 
@@ -113,7 +114,9 @@ public class XmlSwingConverter {
         list.setModel(listModel);
         invokeOnChildElements(elem, listModel, (currElem, currModel) -> {
             Text textNode = (Text) currElem.getFirstChild();
-            currModel.addElement(textNode.getData().trim());
+            String listStr = textNode.getData().trim();
+            namedContainersAndStrings.put(currElem.getAttribute("name"), listStr);
+            currModel.addElement(listStr);
         });
         list.setVisible(true);
         return list;
@@ -127,7 +130,7 @@ public class XmlSwingConverter {
     private JLabel getJLabel(Element elem) {
         Text textNode = (Text) elem.getFirstChild();
         JLabel label = new JLabel(textNode.getData().trim());
-        namedContainers.put(elem.getAttribute("name"), label);
+        namedContainersAndStrings.put(elem.getAttribute("name"), label);
         return label;
     }
 
@@ -138,9 +141,11 @@ public class XmlSwingConverter {
     private JButton getJButton(Element elem) {
         JButton button = new JButton();
         String methodName = elem.getAttribute("action");
+        Text textNode = (Text) elem.getFirstChild();
+        button.setText(textNode.getData().trim());
         button.addActionListener(actions.get(methodName));
         button.setVisible(true);
-        namedContainers.put(elem.getAttribute("name"), button);
+        namedContainersAndStrings.put(elem.getAttribute("name"), button);
         return button;
     }
 
@@ -148,7 +153,7 @@ public class XmlSwingConverter {
         JPanel panel = new JPanel();
         panel.setVisible(true);
         panel.setLayout(new BorderLayout());
-        namedContainers.put(currentParentElem.getAttribute("name"), panel);
+        namedContainersAndStrings.put(currentParentElem.getAttribute("name"), panel);
         invokeOnChildElements(currentParentElem, panel, (currElem, currContainer) -> {
             if (currElem.getTagName().endsWith("NORTH"))
                 currContainer.add(parseElementAsContainer((Element) currElem.getChildNodes().item(1)), BorderLayout.NORTH);
@@ -166,11 +171,33 @@ public class XmlSwingConverter {
 
     private JPanel getFlowLayoutPanel(Element currentParentElem) {
         JPanel panel = new JPanel();
+        FlowLayout layout = new FlowLayout();
         panel.setLayout(new FlowLayout());
-        namedContainers.put(currentParentElem.getAttribute("name"), panel);
+        namedContainersAndStrings.put(currentParentElem.getAttribute("name"), panel);
         invokeOnChildElements(currentParentElem, panel, (elem, currContainer) -> {
             currContainer.add(parseElementAsContainer(elem));
         });
+        return panel;
+    }
+
+    private JPanel getBoxLayoutPanel(Element currentParentElem) {
+        JPanel panel = new JPanel();
+        String layoutOrientation = currentParentElem.getAttribute("orientation");
+        BoxLayout layout;
+        if (!layoutOrientation.equals("")) {
+            if (layoutOrientation.equals("vertical"))
+                layout = new BoxLayout(panel, BoxLayout.Y_AXIS);
+            else
+                layout = new BoxLayout(panel, BoxLayout.X_AXIS);
+        }
+        else {
+            layout = new BoxLayout(panel, BoxLayout.X_AXIS);
+        }
+        panel.setLayout(layout);
+        invokeOnChildElements(currentParentElem, panel, (currElem, currPanel) -> {
+            currPanel.add(parseElementAsContainer(currElem));
+        });
+
         return panel;
     }
 
