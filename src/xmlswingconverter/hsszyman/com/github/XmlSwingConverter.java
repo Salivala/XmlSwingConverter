@@ -3,9 +3,6 @@ package xmlswingconverter.hsszyman.com.github;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
-import javax.naming.ConfigurationException;
-import javax.security.sasl.SaslException;
-import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -15,10 +12,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
+
 
 public class XmlSwingConverter {
     private DocumentBuilderFactory builderFactory;
@@ -41,51 +37,43 @@ public class XmlSwingConverter {
     }
 
     private XmlSwingPage parseXSP() {
-        String title = xmlDoc.getDocumentElement().getAttribute("title");
-        XmlSwingPage xsp = new XmlSwingPage(title);
-        Element root = xmlDoc.getDocumentElement();
-        NodeList children = root.getChildNodes();
-        for (int i = 0; i < children.getLength(); i++) {
-            Node child = children.item(i);
-            if (child instanceof Element) {
-                xsp.setLayout(getLayout((Element) child));
-            }
-        }
+        XmlSwingPage xsp = new XmlSwingPage();
+        parseLayout((Element) xmlDoc.getDocumentElement().getChildNodes().item(1));
         return xsp;
     }
 
-    private BorderLayout parseXSBorderLayout(Element elem) {
-        BorderLayout layout = new BorderLayout();
-        JPanel layoutsPanel = new JPanel();
-        for (int i = 0; i < elem.getChildNodes().getLength() ; i++) {
-            Node node = elem.getChildNodes().item(i);
-            if (node instanceof Element) {
-                Element childElem = (Element) node;
-                if (childElem.getTagName().equals("BorderLayout.TOP"))
-                    layout.addLayoutComponent();
-            }
+    LayoutManager parseLayout(Element elem) {
+        String elemTagName = elem.getTagName();
+        if (elemTagName.equals("BorderLayout")) {
+            return parseBorderLayout(elem);
         }
-
-        return layout;
+        else if (elemTagName.equals("FlowLayout")) {
+            return parseFlowLayout(elem);
+        }
+        return new BorderLayout();
     }
 
-    private FlowLayout parseXSFlowLayout(Element elem) {
+    private BorderLayout parseBorderLayout(Element elem) {
+        BorderLayout borderLayout = new BorderLayout();
+        return new BorderLayout();
+    }
+
+    FlowLayout parseFlowLayout(Element elem) {
         return new FlowLayout();
     }
 
-    private boolean isLayout(Element elem) {
-        String elemTag = elem.getTagName();
-        return elemTag.equals("BorderLayout") || elemTag.equals("FlowLayout");
+    private void parseElement(Element elem, methodInvocation method) {
+        NodeList nodes = elem.getChildNodes();
+        for (int i = 0; i < nodes.getLength(); i++) {
+            if (nodes.item(i) instanceof Element) {
+                method.workOnElement((Element) nodes.item(i));
+            }
+        }
     }
 
-    private LayoutManager getLayout(Element elem) {
-        if (elem.getTagName().equals("BorderLayout"))
-            return parseXSBorderLayout(elem);
-        else
-            return parseXSFlowLayout(elem);
-    }
 
     /**
+     * @param xmlFile : file to generate interface from
      */
     private void initXmlHandlingFields(File xmlFile) {
         builderFactory = DocumentBuilderFactory.newInstance();

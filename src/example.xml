@@ -3,5 +3,7 @@
         <BorderLayout.TOP>
             <JLabel title="Intervallic" />
         </BorderLayout.TOP>
+        <BorderLayout.TOP>
+        </BorderLayout.TOP>
     </BorderLayout>
 </XmlSwingPage>

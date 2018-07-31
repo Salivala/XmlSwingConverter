@@ -2,13 +2,12 @@ package xmlswingconverter.hsszyman.com.github;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
 
 public class XmlSwingPage {
-    private JPanel jpanel = new JPanel();
-    private JFrame frame;
-    XmlSwingPage(String name) {
-        frame = new JFrame(name);
+    public JPanel jpanel = new JPanel();
+    public JFrame frame;
+    XmlSwingPage() {
+        frame = new JFrame();
     }
 
     void setLayout(LayoutManager layout) {
@@ -21,5 +20,9 @@ public class XmlSwingPage {
             return true;
         }
         return false;
+    }
+
+    public void setTitle(String title) {
+        frame.setTitle(title);
     }
 }
