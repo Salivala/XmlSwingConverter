@@ -20,7 +20,7 @@ components to link with invokable actions (think addActionListener, and the sort
 
 ## Planned Features For V2
 1. Map Component/Container References to an easily traversable object, such that you can do 
-```java
+```
 XmlSwingPage page = XmlSwingConverter.producePage("xmlpath");
 page.get("topBorderLayout").get("titleLabel").setTitle("New Title!");
 page.get("bottomBorderLayout").get("execButton").addActionListener(e -> {
@@ -28,6 +28,7 @@ page.get("bottomBorderLayout").get("execButton").addActionListener(e -> {
 });
 // And so on, using xml tages with <JLabel name="titleLabel">alkwjdlakjd</JLabel>
 ```
+2. Write a Dtd for valid Swing xml
 
 ## Currently Implemented
 Basic Functionality
