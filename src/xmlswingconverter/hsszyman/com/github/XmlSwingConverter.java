@@ -15,8 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Flow;
-
+import java.util.Vector;
 
 public class XmlSwingConverter {
     private DocumentBuilderFactory builderFactory;
@@ -42,11 +41,25 @@ public class XmlSwingConverter {
         this.path = xmlPath;
         this.actions = actions;
         File xmlFile = xmlPath.toFile();
-        initXmlHandlingFields(xmlFile);
         frame = new JFrame();
+        initXmlHandlingFields(xmlFile);
         frame.setContentPane(parseElementAsContainer((Element) xmlDoc.getDocumentElement().getChildNodes().item(1)));
-        System.out.println(frame.getContentPane().getLayout().toString());
-        frame.setSize(399,399);
+        configureFrame();
+    }
+
+    /**
+     * Configure JFrame using common defaults and XML Attributes from parent node
+     */
+    private void configureFrame() {
+        String frameSize = xmlDoc.getDocumentElement().getAttribute("size");
+
+        if (!frameSize.equals("")) {
+            int x, y;
+            x = Integer.parseInt(frameSize.substring(0, frameSize.indexOf("x")));
+            y = Integer.parseInt(frameSize.substring(frameSize.indexOf("x") + 1), frameSize.length());
+            frame.setSize(x,y);
+        }
+        frame.setTitle(xmlDoc.getDocumentElement().getAttribute("title"));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -69,8 +82,11 @@ public class XmlSwingConverter {
                 return getJLabel(currentParentElem);
             case "JTextField":
                 return getJTextField(currentParentElem);
+            case "JList":
+                return getJList(currentParentElem);
+            default:
+                return new JLabel("oh no");
         }
-        return null;
     }
 
     /**
@@ -89,6 +105,18 @@ public class XmlSwingConverter {
 
         namedContainers.put(elem.getAttribute("name"), field);
         return field;
+    }
+
+    private JList getJList(Element elem) {
+        JList<String> list = new JList<>();
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        list.setModel(listModel);
+        invokeOnChildElements(elem, listModel, (currElem, currModel) -> {
+            Text textNode = (Text) currElem.getFirstChild();
+            currModel.addElement(textNode.getData().trim());
+        });
+        list.setVisible(true);
+        return list;
     }
 
     /**
@@ -158,6 +186,16 @@ public class XmlSwingConverter {
             if (nodes.item(i) instanceof Element) {
                 Element subjectElem = ((Element) nodes.item(i));
                 func.elemIteratorMethod(subjectElem, container);
+            }
+        }
+    }
+
+    private void invokeOnChildElements(Element elem, DefaultListModel<String> list, ChildListModelIterator func) {
+        NodeList nodes = elem.getChildNodes();
+        for (int i = 0; i < nodes.getLength(); i++) {
+            if (nodes.item(i) instanceof Element) {
+                Element subjectElem = ((Element) nodes.item(i));
+                func.elemChildIteratorMethod(subjectElem, list);
             }
         }
     }

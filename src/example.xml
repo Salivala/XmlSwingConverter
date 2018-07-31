@@ -1,4 +1,4 @@
-<XmlSwingPage title="Intervallic">
+<XmlSwingPage title="Intervallic" size="800x600">
     <BorderLayout name="mainLayout">
         <BorderLayout.NORTH>
             <FlowLayout name="topFlow">
@@ -10,8 +10,13 @@
             </FlowLayout>
         </BorderLayout.NORTH>
         <BorderLayout.CENTER>
-                <JButton name="changeNameButton" action="testAction">
-                </JButton>
+            <JList>
+                <Str>what</Str>
+                <Str>what</Str>
+                <Str>what</Str>
+                <Str>what</Str>
+                <Str>what</Str>
+            </JList>
         </BorderLayout.CENTER>
         <BorderLayout.SOUTH>
             <JTextField name="setTitle">
