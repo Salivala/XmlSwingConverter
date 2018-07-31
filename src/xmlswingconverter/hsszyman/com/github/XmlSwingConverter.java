@@ -22,10 +22,16 @@ public class XmlSwingConverter {
     private DocumentBuilderFactory builderFactory;
     private DocumentBuilder builder;
     private Document xmlDoc;
+    private Map<String, ActionListener> actions;
     private XmlSwingPage page;
 
+
     public static void main(String[] args) {
-        XmlSwingConverter converter = new XmlSwingConverter(Paths.get("./src", "example.xml"), new HashMap<>());
+        HashMap<String, ActionListener> actions = new HashMap<>();
+        actions.put(
+                "doThing", e -> {System.out.println("WOW!");}
+                );
+        XmlSwingConverter converter = new XmlSwingConverter(Paths.get("./src", "example.xml"), actions);
     }
 
     /**
@@ -33,6 +39,7 @@ public class XmlSwingConverter {
      * @param actions : hashmap of actionListeners
      */
     public XmlSwingConverter(Path xmlPath, Map<String, ActionListener> actions) {
+        this.actions = actions;
         File xmlFile = xmlPath.toFile();
         initXmlHandlingFields(xmlFile);
         JFrame frame = new JFrame();
@@ -48,24 +55,26 @@ public class XmlSwingConverter {
      * @return
      */
     private Container parseElementAsContainer(Element currentParentElem) {
-        switch (currentParentElem.getTagName()) {
-            case "BorderLayout":
-                return getBorderLayoutPanel(currentParentElem);
-            case "FlowLayout":
-                return getFlowLayoutPanel(currentParentElem);
-            case "JButton":
-                JButton button = new JButton();
-                button.setVisible(true);
-                return button;
-            case "JLabel":
-                Text textNode = (Text) currentParentElem.getFirstChild();
-                JLabel label = new JLabel(textNode.getData().trim());
-                return label;
-            case "JTextField":
-                Text t = (Text) currentParentElem.getFirstChild();
-                JTextField field = new JTextField();
-                field.setText(t.getData().trim());
-                return field;
+        String s = currentParentElem.getTagName();
+        if ("BorderLayout".equals(s)) {
+            return getBorderLayoutPanel(currentParentElem);
+        } else if ("FlowLayout".equals(s)) {
+            return getFlowLayoutPanel(currentParentElem);
+        } else if ("JButton".equals(s)) {
+            JButton button = new JButton();
+            String methodName = currentParentElem.getAttribute("action");
+            button.addActionListener(actions.get(methodName));
+            button.setVisible(true);
+            return button;
+        } else if ("JLabel".equals(s)) {
+            Text textNode = (Text) currentParentElem.getFirstChild();
+            JLabel label = new JLabel(textNode.getData().trim());
+            return label;
+        } else if ("JTextField".equals(s)) {
+            Text textNode = (Text) currentParentElem.getFirstChild();
+            JTextField field = new JTextField();
+            field.setText(textNode.getData().trim());
+            return field;
         }
         return null;
     }
