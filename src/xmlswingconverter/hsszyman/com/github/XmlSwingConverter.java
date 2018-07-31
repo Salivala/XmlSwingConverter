@@ -23,6 +23,7 @@ public class XmlSwingConverter {
     private DocumentBuilder builder;
     private Document xmlDoc;
     private Map<String, ActionListener> actions;
+    public Map<String, Container> namedContainers = new HashMap<>();
     private XmlSwingPage page;
     public JFrame frame;
     private Path path;
@@ -48,6 +49,7 @@ public class XmlSwingConverter {
         frame.setSize(399,399);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     /**
@@ -80,6 +82,12 @@ public class XmlSwingConverter {
         Text textNode = (Text) elem.getFirstChild();
         JTextField field = new JTextField();
         field.setText(textNode.getData().trim());
+        String textFieldColumns = elem.getAttribute("columns");
+        if (!textFieldColumns.equals("")) {
+            field.setColumns(Integer.valueOf(textFieldColumns));
+        }
+
+        namedContainers.put(elem.getAttribute("name"), field);
         return field;
     }
 
@@ -91,6 +99,7 @@ public class XmlSwingConverter {
     private JLabel getJLabel(Element elem) {
         Text textNode = (Text) elem.getFirstChild();
         JLabel label = new JLabel(textNode.getData().trim());
+        namedContainers.put(elem.getAttribute("name"), label);
         return label;
     }
 
@@ -103,6 +112,7 @@ public class XmlSwingConverter {
         String methodName = elem.getAttribute("action");
         button.addActionListener(actions.get(methodName));
         button.setVisible(true);
+        namedContainers.put(elem.getAttribute("name"), button);
         return button;
     }
 
@@ -110,6 +120,7 @@ public class XmlSwingConverter {
         JPanel panel = new JPanel();
         panel.setVisible(true);
         panel.setLayout(new BorderLayout());
+        namedContainers.put(currentParentElem.getAttribute("name"), panel);
         invokeOnChildElements(currentParentElem, panel, (currElem, currContainer) -> {
             if (currElem.getTagName().endsWith("NORTH"))
                 currContainer.add(parseElementAsContainer((Element) currElem.getChildNodes().item(1)), BorderLayout.NORTH);
@@ -119,6 +130,8 @@ public class XmlSwingConverter {
                 currContainer.add(parseElementAsContainer((Element) currElem.getChildNodes().item(1)), BorderLayout.EAST);
             else if (currElem.getTagName().endsWith("WEST"))
                 currContainer.add(parseElementAsContainer((Element) currElem.getChildNodes().item(1)), BorderLayout.WEST);
+            else if (currElem.getTagName().endsWith("CENTER"))
+                currContainer.add(parseElementAsContainer((Element) currElem.getChildNodes().item(1)), BorderLayout.CENTER);
         });
         return panel;
     }
@@ -126,12 +139,19 @@ public class XmlSwingConverter {
     private JPanel getFlowLayoutPanel(Element currentParentElem) {
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
+        namedContainers.put(currentParentElem.getAttribute("name"), panel);
         invokeOnChildElements(currentParentElem, panel, (elem, currContainer) -> {
             currContainer.add(parseElementAsContainer(elem));
         });
         return panel;
     }
 
+    /**
+     * Helper method to reduce redundant code
+     * @param elem element to get the child elements of
+     * @param container container that elements can be added to
+     * @param func : lambda representing the operation to be done inside the for loop
+     */
     private void invokeOnChildElements(Element elem, Container container, ChildElemIterator func) {
         NodeList nodes = elem.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {

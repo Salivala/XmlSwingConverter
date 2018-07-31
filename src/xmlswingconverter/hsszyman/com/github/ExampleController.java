@@ -12,10 +12,12 @@ public class ExampleController {
     int k = 0;
     public ExampleController() {
         actions = new HashMap<>();
+        actions.put("testAction", e -> {System.out.println("defaultAction");});
         JButton button = new JButton();
         XmlSwingConverter converter = new XmlSwingConverter(Paths.get("./src", "example.xml"), actions);
-        converter.addAction("doThing", e -> {
-            ((JLabel) converter.frame.getContentPane().getComponent(1)).setText("wow");
+        converter.addAction("testAction", e-> {
+            ((JLabel) converter.namedContainers.get("title")).setText(
+                ((JTextField)converter.namedContainers.get("newNameField")).getText());
         });
     }
 

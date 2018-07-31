@@ -1,18 +1,21 @@
 <XmlSwingPage title="Intervallic">
-    <BorderLayout>
+    <BorderLayout name="mainLayout">
         <BorderLayout.NORTH>
-            <FlowLayout>
-                <JLabel>
-                    bears
+            <FlowLayout name="topFlow">
+                <JLabel name="title">
+                    bill gates
                 </JLabel>
-                <JButton action="doThing">
-                </JButton>
+                <JTextField name="newNameField" columns="10">
+                </JTextField>
             </FlowLayout>
         </BorderLayout.NORTH>
+        <BorderLayout.CENTER>
+                <JButton name="changeNameButton" action="testAction">
+                </JButton>
+        </BorderLayout.CENTER>
         <BorderLayout.SOUTH>
-            <JLabel>
-                test
-            </JLabel>
+            <JTextField name="setTitle">
+            </JTextField>
         </BorderLayout.SOUTH>
     </BorderLayout>
 </XmlSwingPage>
