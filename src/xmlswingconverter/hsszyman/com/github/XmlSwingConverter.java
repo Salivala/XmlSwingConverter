@@ -48,24 +48,26 @@ public class XmlSwingConverter {
      * @return
      */
     private Container parseElementAsContainer(Element currentParentElem) {
-        Container container = null;
-        //System.out.println(currentParentElem.getTagName());
-        if (currentParentElem.getTagName().equals("BorderLayout")) {
-            container = getBorderLayoutPanel(currentParentElem);
+        switch (currentParentElem.getTagName()) {
+            case "BorderLayout":
+                return getBorderLayoutPanel(currentParentElem);
+            case "FlowLayout":
+                return getFlowLayoutPanel(currentParentElem);
+            case "JButton":
+                JButton button = new JButton();
+                button.setVisible(true);
+                return button;
+            case "JLabel":
+                Text textNode = (Text) currentParentElem.getFirstChild();
+                JLabel label = new JLabel(textNode.getData().trim());
+                return label;
+            case "JTextField":
+                Text t = (Text) currentParentElem.getFirstChild();
+                JTextField field = new JTextField();
+                field.setText(t.getData().trim());
+                return field;
         }
-        else if (currentParentElem.getTagName().equals("FlowLayout")) {
-
-        }
-        else if (currentParentElem.getTagName().equals("JButton")) {
-            JButton button = new JButton();
-            button.setVisible(true);
-            return button;
-        }
-        else if (currentParentElem.getTagName().equals("JLabel")) {
-            JLabel label = new JLabel("testtie");
-            return label;
-        }
-        return container;
+        return null;
     }
 
     private JPanel getBorderLayoutPanel(Element currentParentElem) {
@@ -81,6 +83,15 @@ public class XmlSwingConverter {
                 currContainer.add(parseElementAsContainer((Element) currElem.getChildNodes().item(1)), BorderLayout.EAST);
             else if (currElem.getTagName().endsWith("WEST"))
                 currContainer.add(parseElementAsContainer((Element) currElem.getChildNodes().item(1)), BorderLayout.WEST);
+        });
+        return panel;
+    }
+
+    private JPanel getFlowLayoutPanel(Element currentParentElem) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+        invokeOnChildElements(currentParentElem, panel, (elem, currContainer) -> {
+            currContainer.add(parseElementAsContainer(elem));
         });
         return panel;
     }

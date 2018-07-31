@@ -1,12 +1,18 @@
 <XmlSwingPage title="Intervallic">
     <BorderLayout>
-                <BorderLayout.SOUTH>
-                    <JLabel>
-                    </JLabel>
-                </BorderLayout.SOUTH>
-                <BorderLayout.NORTH>
-                    <JButton>
-                    </JButton>
-                </BorderLayout.NORTH>
+        <BorderLayout.NORTH>
+            <FlowLayout>
+                <JLabel>
+                    bears
+                </JLabel>
+                <JButton action="doThing">
+                </JButton>
+            </FlowLayout>
+        </BorderLayout.NORTH>
+        <BorderLayout.SOUTH>
+            <JLabel>
+                test
+            </JLabel>
+        </BorderLayout.SOUTH>
     </BorderLayout>
 </XmlSwingPage>
