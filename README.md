@@ -12,6 +12,23 @@ provide full swing functionality through xml. XmlSwingConverter emphasizes quick
 and wireframing instead. This allows the XML needed to generate the Swing
 interface to be simpler and straight to the point. 
 
+## Planned Features For V1
+1. "Full" support for FlowLayouts and BorderLayouts (the layouts I use most often)
+2. JLabels, JButtons, JTextFields, JTextAreas supported
+3. XmlSwingConverters will take in a Map of <String, ActionListener> that will allow
+components to link with invokable actions (think addActionListener, and the sort)
+
+## Planned Features For V2
+1. Map Component/Container References to an easily traversable object, such that you can do 
+```java
+XmlSwingPage page = XmlSwingConverter.producePage("xmlpath");
+page.get("topBorderLayout").get("titleLabel").setTitle("New Title!");
+page.get("bottomBorderLayout").get("execButton").addActionListener(e -> {
+    System.out.println("New Action!");
+});
+// And so on, using xml tages with <JLabel name="titleLabel">alkwjdlakjd</JLabel>
+```
+
 ## Currently Implemented
 Basic Functionality
 * Layouts
