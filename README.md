@@ -1,5 +1,5 @@
 # XmlSwingConverter
-Generate Swing interfaces configured through XML
+Recursively generate Swing interfaces configured through XML
 
 ## Rationale
 Lately i've been doing a lot of small Java projects that use a simple swing interface.
