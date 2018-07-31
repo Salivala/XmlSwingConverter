@@ -24,25 +24,25 @@ public class XmlSwingConverter {
     private Document xmlDoc;
     private Map<String, ActionListener> actions;
     private XmlSwingPage page;
-
+    public JFrame frame;
+    private Path path;
 
     public static void main(String[] args) {
         HashMap<String, ActionListener> actions = new HashMap<>();
-        actions.put(
-                "doThing", e -> {System.out.println("WOW!");}
-                );
         XmlSwingConverter converter = new XmlSwingConverter(Paths.get("./src", "example.xml"), actions);
     }
+
 
     /**
      * @param xmlPath : path of the xml file that is formatted as an XMLSwingPage
      * @param actions : hashmap of actionListeners
      */
     public XmlSwingConverter(Path xmlPath, Map<String, ActionListener> actions) {
+        this.path = xmlPath;
         this.actions = actions;
         File xmlFile = xmlPath.toFile();
         initXmlHandlingFields(xmlFile);
-        JFrame frame = new JFrame();
+        frame = new JFrame();
         frame.setContentPane(parseElementAsContainer((Element) xmlDoc.getDocumentElement().getChildNodes().item(1)));
         System.out.println(frame.getContentPane().getLayout().toString());
         frame.setSize(399,399);
@@ -56,27 +56,54 @@ public class XmlSwingConverter {
      */
     private Container parseElementAsContainer(Element currentParentElem) {
         String s = currentParentElem.getTagName();
-        if ("BorderLayout".equals(s)) {
-            return getBorderLayoutPanel(currentParentElem);
-        } else if ("FlowLayout".equals(s)) {
-            return getFlowLayoutPanel(currentParentElem);
-        } else if ("JButton".equals(s)) {
-            JButton button = new JButton();
-            String methodName = currentParentElem.getAttribute("action");
-            button.addActionListener(actions.get(methodName));
-            button.setVisible(true);
-            return button;
-        } else if ("JLabel".equals(s)) {
-            Text textNode = (Text) currentParentElem.getFirstChild();
-            JLabel label = new JLabel(textNode.getData().trim());
-            return label;
-        } else if ("JTextField".equals(s)) {
-            Text textNode = (Text) currentParentElem.getFirstChild();
-            JTextField field = new JTextField();
-            field.setText(textNode.getData().trim());
-            return field;
+        switch (s) {
+            case "BorderLayout":
+                return getBorderLayoutPanel(currentParentElem);
+            case "FlowLayout":
+                return getFlowLayoutPanel(currentParentElem);
+            case "JButton":
+                return getJButton(currentParentElem);
+            case "JLabel":
+                return getJLabel(currentParentElem);
+            case "JTextField":
+                return getJTextField(currentParentElem);
         }
         return null;
+    }
+
+    /**
+     *
+     * @param elem
+     * @return
+     */
+    private JTextField getJTextField(Element elem) {
+        Text textNode = (Text) elem.getFirstChild();
+        JTextField field = new JTextField();
+        field.setText(textNode.getData().trim());
+        return field;
+    }
+
+    /**
+     *
+     * @param elem
+     * @return
+     */
+    private JLabel getJLabel(Element elem) {
+        Text textNode = (Text) elem.getFirstChild();
+        JLabel label = new JLabel(textNode.getData().trim());
+        return label;
+    }
+
+    /**
+     * @param elem : current element
+     * @return button that was produced
+     */
+    private JButton getJButton(Element elem) {
+        JButton button = new JButton();
+        String methodName = elem.getAttribute("action");
+        button.addActionListener(actions.get(methodName));
+        button.setVisible(true);
+        return button;
     }
 
     private JPanel getBorderLayoutPanel(Element currentParentElem) {
@@ -113,6 +140,11 @@ public class XmlSwingConverter {
                 func.elemIteratorMethod(subjectElem, container);
             }
         }
+    }
+
+    public void addAction(String name, ActionListener action) {
+        actions.put(name, action);
+        frame.setContentPane(parseElementAsContainer((Element) xmlDoc.getDocumentElement().getChildNodes().item(1)));
     }
 
 
