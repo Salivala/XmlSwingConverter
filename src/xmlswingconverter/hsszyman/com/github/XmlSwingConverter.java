@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,14 +22,8 @@ public class XmlSwingConverter {
     private Map<String, ActionListener> actions;
     public Map<String, Object> namedContainersAndStrings = new HashMap<>();
     private XmlSwingPage page;
-    public JFrame frame;
+    JFrame frame;
     private Path path;
-
-    public static void main(String[] args) {
-        HashMap<String, ActionListener> actions = new HashMap<>();
-        XmlSwingConverter converter = new XmlSwingConverter(Paths.get("./src", "example.xml"), actions);
-    }
-
 
     /**
      * @param xmlPath : path of the xml file that is formatted as an XMLSwingPage
@@ -40,10 +33,24 @@ public class XmlSwingConverter {
         this.path = xmlPath;
         this.actions = actions;
         File xmlFile = xmlPath.toFile();
-        frame = new JFrame();
-        initXmlHandlingFields(xmlFile);
-        frame.setContentPane(parseElementAsContainer((Element) xmlDoc.getDocumentElement().getChildNodes().item(1)));
-        configureFrame();
+        Thread createJFrameThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                frame = new JFrame();
+                initXmlHandlingFields(xmlFile);
+                frame.setContentPane(parseElementAsContainer((Element) xmlDoc.getDocumentElement().getChildNodes().item(1)));
+                configureFrame();
+            }
+        });
+        createJFrameThread.start();
+        try {
+            createJFrameThread.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    public XmlSwingConverter(File file, Map<String, ActionListener> actions) {
     }
 
     /**
@@ -108,6 +115,11 @@ public class XmlSwingConverter {
         return field;
     }
 
+
+    /**
+     * @param elem : Current element in the DOM
+     * @return a new JList
+     */
     private JList getJList(Element elem) {
         JList<String> list = new JList<>();
         DefaultListModel<String> listModel = new DefaultListModel<>();
@@ -149,6 +161,11 @@ public class XmlSwingConverter {
         return button;
     }
 
+    /**
+     *
+     * @param currentParentElem : current Element in the dom
+     * @return new Jpanel container a border layout
+     */
     private JPanel getBorderLayoutPanel(Element currentParentElem) {
         JPanel panel = new JPanel();
         panel.setVisible(true);

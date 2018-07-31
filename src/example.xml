@@ -5,8 +5,6 @@
                 <JLabel name="title">
                     bill gates
                 </JLabel>
-                <JTextField name="newNameField" columns="10">
-                </JTextField>
             </FlowLayout>
         </BorderLayout.NORTH>
         <BorderLayout.CENTER>
