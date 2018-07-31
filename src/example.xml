@@ -1,77 +1,34 @@
-<XmlSwingPage title="Intervallic" size="800x600">
-    <BorderLayout name="mainLayout">
+<!--This is an example of what this is capable of-->
+<XmlSwingPage title="Intervallic" size="300x300">
+    <BorderLayout>
         <BorderLayout.NORTH>
-            <FlowLayout name="topFlow">
-                <JLabel name="title">
-                    bill gates
-                </JLabel>
+            <FlowLayout>
+                <JLabel>Set name</JLabel>
+                <JTextField name="input" columns="9">
+                </JTextField>
+                <JButton name="button" action="go">Button</JButton>
             </FlowLayout>
         </BorderLayout.NORTH>
+        <BorderLayout.WEST>
+            <BoxLayout orientation="vertical">
+                <JLabel name="first">Time: 300</JLabel>
+                <JLabel>Time: 3031</JLabel>
+                <JLabel>Time: 2</JLabel>
+                <JLabel>Time: 291</JLabel>
+                <JLabel>Time: 300</JLabel>
+            </BoxLayout>
+        </BorderLayout.WEST>
+        <BorderLayout.EAST>
+            <BoxLayout orientation="vertical">
+                <JLabel>neat</JLabel>
+            </BoxLayout>
+        </BorderLayout.EAST>
         <BorderLayout.CENTER>
             <FlowLayout>
-                <JList>
-                    <Str name="billy">what</Str>
-                    <Str>what</Str>
-                    <Str>what</Str>
-                    <Str>what</Str>
-                    <Str>what</Str>
-                </JList>
-                <JList>
-                    <Str name="billy">what</Str>
-                    <Str>what</Str>
-                    <Str>what</Str>
-                    <Str>what</Str>
-                    <Str>what</Str>
-                </JList>
-                <JList>
-                    <Str name="billy">what</Str>
-                    <Str>what</Str>
-                    <Str>what</Str>
-                    <Str>what</Str>
-                    <Str>what</Str>
-                </JList>
-                <JList>
-                    <Str name="billy">what</Str>
-                    <Str>what</Str>
-                    <Str>what</Str>
-                    <Str>what</Str>
-                    <Str>what</Str>
-                </JList>
-                <JList>
-                    <Str name="billy">what</Str>
-                    <Str>what</Str>
-                    <Str>what</Str>
-                    <Str>what</Str>
-                    <Str>what</Str>
-                </JList>
-                <JList>
-                    <Str name="billy">what</Str>
-                    <Str>what</Str>
-                    <Str>what</Str>
-                    <Str>what</Str>
-                    <Str>what</Str>
-                </JList>
-                <JList>
-                    <Str name="billy">what</Str>
-                    <Str>what</Str>
-                    <Str>what</Str>
-                    <Str>what</Str>
-                    <Str>what</Str>
-                </JList>
+                <BoxLayout>
+                    <JButton>test</JButton>
+                </BoxLayout>
             </FlowLayout>
         </BorderLayout.CENTER>
-        <BorderLayout.SOUTH>
-            <BoxLayout orientation="vertical">
-                <FlowLayout>
-                    <JTextField name="setTitle" columns="9">
-                    </JTextField>
-                </FlowLayout>
-                <FlowLayout>
-                    <JButton name="button" action="go">
-                        Change Title
-                    </JButton>
-                </FlowLayout>
-            </BoxLayout>
-        </BorderLayout.SOUTH>
     </BorderLayout>
 </XmlSwingPage>

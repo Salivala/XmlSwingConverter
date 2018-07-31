@@ -10,13 +10,11 @@ public class ExampleController {
     int k = 0;
     public ExampleController() {
         actions = new HashMap<>();
-        actions.put("testAction", e -> {System.out.println("defaultAction");});
+        actions.put("go", e -> {System.out.println("defaultAction");});
         JButton button = new JButton();
         XmlSwingConverter converter = new XmlSwingConverter(Paths.get("./src", "example.xml"), actions);
         converter.addAction("go", e -> {
-            ((JLabel) converter.namedContainersAndStrings.get("title")).setText(
-                    ((JTextField) converter.namedContainersAndStrings.get("setTitle")).getText()
-            );
+            ((JLabel) converter.namedContainersAndStrings.get("first")).setText("map:  300");
         });
     }
 

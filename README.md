@@ -35,6 +35,7 @@ Basic Functionality
 * Layouts
     - BorderLayout
     - FlowLayout
+    - BoxLayout (Vertical ans Horizontal)
 * Containers
     - JButton
     - JLabel (Inner TextNode as JLabel title)

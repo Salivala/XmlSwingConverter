@@ -33,18 +33,16 @@ public class XmlSwingConverter {
         this.path = xmlPath;
         this.actions = actions;
         File xmlFile = xmlPath.toFile();
-        Thread createJFrameThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                frame = new JFrame();
-                initXmlHandlingFields(xmlFile);
-                frame.setContentPane(parseElementAsContainer((Element) xmlDoc.getDocumentElement().getChildNodes().item(1)));
-                configureFrame();
-            }
+        Thread createJFrameThread = new Thread(() -> {
+            frame = new JFrame();
+            initXmlHandlingFields(xmlFile);
+            frame.setContentPane(parseElementAsContainer((Element) xmlDoc.getDocumentElement().getChildNodes().item(1)));
+            configureFrame();
         });
         createJFrameThread.start();
         try {
             createJFrameThread.join();
+            frame.setVisible(true);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
@@ -67,7 +65,6 @@ public class XmlSwingConverter {
         }
         frame.setTitle(xmlDoc.getDocumentElement().getAttribute("title"));
         frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
