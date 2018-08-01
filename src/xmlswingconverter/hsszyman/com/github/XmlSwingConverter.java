@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * TODO: Respect encapsulation and provide setters and getters for fields
@@ -23,14 +24,20 @@ public class XmlSwingConverter {
     private DocumentBuilderFactory builderFactory;
     private DocumentBuilder builder;
     private Document xmlDoc;
+
     private Map<String, ActionListener> actions;
-    public Map<String, Object> namedContainersAndStrings = new HashMap<>();
-    public Map<String, JButton> buttons = new HashMap<>();
-    public Map<String, JLabel> labels = new HashMap<>();
-    public Map<String, JTextField> textFields = new HashMap<>();
-    public Map<String, JList> lists = new HashMap<>();
-    private XmlSwingPage page;
-    JFrame frame;
+
+    /**
+     * Component maps, for easy access to generated components
+     */
+    private Map<String, JButton> buttons = new HashMap<>();
+    private Map<String, JLabel> labels = new HashMap<>();
+    private Map<String, JTextField> textFields = new HashMap<>();
+    private Map<String, JList> lists = new HashMap<>();
+    private Map<String, JTree> trees = new HashMap<>();
+
+
+    private JFrame frame;
     private Path path;
 
     /**
@@ -110,6 +117,7 @@ public class XmlSwingConverter {
      */
     private JTree getJTree(Element elem) {
         JTree tree = new JTree(getTreeNode(elem, new DefaultMutableTreeNode(elem.getAttribute("title"))));
+        trees.put(elem.getAttribute("name"), tree);
         return tree;
     }
 
@@ -142,7 +150,6 @@ public class XmlSwingConverter {
             field.setColumns(Integer.valueOf(textFieldColumns));
         }
 
-        namedContainersAndStrings.put(elem.getAttribute("name"), field);
         textFields.put(elem.getAttribute("name"), field);
         return field;
     }
@@ -160,7 +167,6 @@ public class XmlSwingConverter {
         invokeOnChildElements(elem, listModel, (currElem, currModel) -> {
             Text textNode = (Text) currElem.getFirstChild();
             String listStr = textNode.getData().trim();
-            namedContainersAndStrings.put(currElem.getAttribute("name"), listStr);
             currModel.addElement(listStr);
         });
         list.setVisible(true);
@@ -175,7 +181,6 @@ public class XmlSwingConverter {
     private JLabel getJLabel(Element elem) {
         Text textNode = (Text) elem.getFirstChild();
         JLabel label = new JLabel(textNode.getData().trim());
-        namedContainersAndStrings.put(elem.getAttribute("name"), label);
         labels.put(elem.getAttribute("name"), label);
         return label;
     }
@@ -191,7 +196,6 @@ public class XmlSwingConverter {
         button.setText(textNode.getData().trim());
         button.addActionListener(actions.get(methodName));
         button.setVisible(true);
-        namedContainersAndStrings.put(elem.getAttribute("name"), button);
         buttons.put(elem.getAttribute("name"), button);
         return button;
     }
@@ -205,7 +209,6 @@ public class XmlSwingConverter {
         JPanel panel = new JPanel();
         panel.setVisible(true);
         panel.setLayout(new BorderLayout());
-        namedContainersAndStrings.put(currentParentElem.getAttribute("name"), panel);
         invokeOnChildElements(currentParentElem, panel, (currElem, currContainer) -> {
             if (currElem.getTagName().endsWith("NORTH"))
                 currContainer.add(parseElementAsContainer((Element) currElem.getChildNodes().item(1)), BorderLayout.NORTH);
@@ -225,7 +228,6 @@ public class XmlSwingConverter {
         JPanel panel = new JPanel();
         FlowLayout layout = new FlowLayout();
         panel.setLayout(new FlowLayout());
-        namedContainersAndStrings.put(currentParentElem.getAttribute("name"), panel);
         invokeOnChildElements(currentParentElem, panel, (elem, currContainer) -> {
             currContainer.add(parseElementAsContainer(elem));
         });
@@ -311,5 +313,45 @@ public class XmlSwingConverter {
         catch (SAXException e) {
             e.printStackTrace();
         }
+    }
+
+    public JButton getButton(String buttonName) {
+        return buttons.get(buttonName);
+    }
+
+    public void setButton(String buttonName, JButton button) {
+        buttons.put(buttonName, button);
+    }
+
+    public JLabel getLabel(String labelName) {
+        return labels.get(labelName);
+    }
+
+    public void setLabel(String labelName, JLabel label) {
+        labels.put(labelName, label);
+    }
+
+    public JTextField getTextField(String textFieldName) {
+        return textFields.get(textFieldName);
+    }
+
+    public void setTextFields(String textFieldName, JTextField textField) {
+        textFields.put(textFieldName, textField);
+    }
+
+    public JTree getTree(String treeName) {
+        return trees.get(treeName);
+    }
+
+    public void setTree(String treeName, JTree tree) {
+        trees.put(treeName, tree);
+    }
+
+    public JList getList(String listName) {
+        return lists.get(listName);
+    }
+
+    public void setList(String listName, JList list) {
+        lists.put(listName, list);
     }
 }

@@ -4,9 +4,11 @@
         <BorderLayout.CENTER>
             <JTree title="tree" name="tree">
                 <Node title="thing">
-                    <Node title="bing"></Node>
                     <Node title="bing">
-                        <Node title="bing"></Node>
+                    </Node>
+                    <Node title="bing">
+                        <Node title="bing">
+                        </Node>
                     </Node>
 
                 </Node>
