@@ -6,7 +6,7 @@
                 <JLabel>Set name</JLabel>
                 <JTextField name="input" columns="9">
                 </JTextField>
-                <JButton name="button" action="go">Button</JButton>
+                <JButton name="button" action="mainButtonAction">Button</JButton>
             </FlowLayout>
         </BorderLayout.NORTH>
         <BorderLayout.WEST>
@@ -25,7 +25,12 @@
         </BorderLayout.EAST>
         <BorderLayout.CENTER>
             <FlowLayout>
-                <BoxLayout>
+                <BoxLayout orientation="vertical">
+                    <JButton>test</JButton>
+                    <JButton>test</JButton>
+                    <JButton>test</JButton>
+                    <JButton>test</JButton>
+                    <JButton>test</JButton>
                     <JButton>test</JButton>
                 </BoxLayout>
             </FlowLayout>

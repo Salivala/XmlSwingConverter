@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class XmlSwingConverter {
     private DocumentBuilderFactory builderFactory;
@@ -21,6 +22,10 @@ public class XmlSwingConverter {
     private Document xmlDoc;
     private Map<String, ActionListener> actions;
     public Map<String, Object> namedContainersAndStrings = new HashMap<>();
+    public Map<String, JButton> buttons = new HashMap<>();
+    public Map<String, JLabel> labels = new HashMap<>();
+    public Map<String, JTextField> textFields = new HashMap<>();
+    public Map<String, JList> lists = new HashMap<>();
     private XmlSwingPage page;
     JFrame frame;
     private Path path;
@@ -109,6 +114,7 @@ public class XmlSwingConverter {
         }
 
         namedContainersAndStrings.put(elem.getAttribute("name"), field);
+        textFields.put(elem.getAttribute("name"), field);
         return field;
     }
 
@@ -121,6 +127,7 @@ public class XmlSwingConverter {
         JList<String> list = new JList<>();
         DefaultListModel<String> listModel = new DefaultListModel<>();
         list.setModel(listModel);
+        lists.put(elem.getAttribute("name"), list);
         invokeOnChildElements(elem, listModel, (currElem, currModel) -> {
             Text textNode = (Text) currElem.getFirstChild();
             String listStr = textNode.getData().trim();
@@ -140,6 +147,7 @@ public class XmlSwingConverter {
         Text textNode = (Text) elem.getFirstChild();
         JLabel label = new JLabel(textNode.getData().trim());
         namedContainersAndStrings.put(elem.getAttribute("name"), label);
+        labels.put(elem.getAttribute("name"), label);
         return label;
     }
 
@@ -155,6 +163,7 @@ public class XmlSwingConverter {
         button.addActionListener(actions.get(methodName));
         button.setVisible(true);
         namedContainersAndStrings.put(elem.getAttribute("name"), button);
+        buttons.put(elem.getAttribute("name"), button);
         return button;
     }
 
