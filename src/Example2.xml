@@ -1,0 +1,19 @@
+<!-- Experimenting with JTree -->
+<XSP title="JTree Example" size="300x300">
+    <BorderLayout>
+        <BorderLayout.CENTER>
+            <JTree title="tree" name="tree">
+                <Node title="thing">
+                    <Node title="bing"></Node>
+                    <Node title="bing">
+                        <Node title="bing"></Node>
+                    </Node>
+
+                </Node>
+                <Node title="thing">
+                    <Node title="bing"></Node>
+                </Node>
+            </JTree>
+        </BorderLayout.CENTER>
+    </BorderLayout>
+</XSP>

@@ -11,10 +11,8 @@ public class ExampleController {
     public ExampleController() {
         actions = new HashMap<>();
         actions.put("do", e -> {System.out.println("Example action");});
-        XmlSwingConverter converter = new XmlSwingConverter(Paths.get("./src", "Example1.xml"), actions);
-        converter.buttons.get("button").addActionListener(e -> {
-            converter.labels.get("title").setText("weeee");
-        });
+        //XmlSwingConverter converter = new XmlSwingConverter(Paths.get("./src", "Example1.xml"), actions);
+        XmlSwingConverter converter = new XmlSwingConverter(Paths.get("./src", "Example2.xml"), actions);
     }
 
     public static void main(String[] args) {

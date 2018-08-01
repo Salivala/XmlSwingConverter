@@ -4,6 +4,7 @@ import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -14,8 +15,10 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
+/**
+ * TODO: Respect encapsulation and provide setters and getters for fields
+ */
 public class XmlSwingConverter {
     private DocumentBuilderFactory builderFactory;
     private DocumentBuilder builder;
@@ -94,11 +97,37 @@ public class XmlSwingConverter {
                 return getJTextField(currentParentElem);
             case "JList":
                 return getJList(currentParentElem);
+            case "JTree":
+                return getJTree(currentParentElem);
             default:
                 return new JLabel("oh no");
         }
     }
 
+    /**
+     * @param elem
+     * @return
+     */
+    private JTree getJTree(Element elem) {
+        JTree tree = new JTree(getTreeNode(elem, new DefaultMutableTreeNode(elem.getAttribute("title"))));
+        return tree;
+    }
+
+    private DefaultMutableTreeNode getTreeNode(Element elem, DefaultMutableTreeNode node) {
+        invokeOnChildElements(elem, node, (currElem, currNode) -> {
+            if (currElem.getTagName().equalsIgnoreCase("node")) {
+                DefaultMutableTreeNode newNode = getTreeNode(currElem, new DefaultMutableTreeNode(currElem.getAttribute("title")));
+                currNode.add(newNode);
+            }
+            else if (currElem.getTagName().equalsIgnoreCase("content")) {
+                String text = (currElem.getFirstChild() instanceof Text) ? ((Text) currElem.getFirstChild()).getData().trim() : "";
+                if (!text.equals("")) {
+                    currNode.add(new DefaultMutableTreeNode(text));
+                }
+            }
+        });
+        return node;
+    }
     /**
      *
      * @param elem
@@ -246,6 +275,16 @@ public class XmlSwingConverter {
             if (nodes.item(i) instanceof Element) {
                 Element subjectElem = ((Element) nodes.item(i));
                 func.elemChildIteratorMethod(subjectElem, list);
+            }
+        }
+    }
+
+    private void invokeOnChildElements (Element elem, DefaultMutableTreeNode treeNode, TreeNodeChildIterator func) {
+        NodeList nodes = elem.getChildNodes();
+        for (int i = 0; i < nodes.getLength(); i++) {
+            if (nodes.item(i) instanceof Element) {
+                Element subjectElem = ((Element) nodes.item(i));
+                func.elemTreeNodeChildIterator(subjectElem, treeNode);
             }
         }
     }

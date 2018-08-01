@@ -1,4 +1,4 @@
-<XSP title="example1" size="300x300">
+<XSP title="example1" size="300x500">
     <BorderLayout>
         <BorderLayout.NORTH>
             <BoxLayout orientation="vertical">
@@ -12,7 +12,19 @@
                         Push Me
                     </JButton>
                 </FlowLayout>
+                <FlowLayout>
+                    <JButton action="do" name="wee">
+                        Push Me
+                    </JButton>
+                </FlowLayout>
             </BoxLayout>
         </BorderLayout.NORTH>
+        <BorderLayout.CENTER>
+            <FlowLayout>
+                <JLabel>
+                    Testing
+                </JLabel>
+            </FlowLayout>
+        </BorderLayout.CENTER>
     </BorderLayout>
 </XSP>
