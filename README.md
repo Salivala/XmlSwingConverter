@@ -12,6 +12,10 @@ provide full swing functionality through xml. XmlSwingConverter emphasizes quick
 and wireframing instead. This allows the XML needed to generate the Swing
 interface to be simpler and straight to the point. 
 
+## Current Limitations
+* Client side code for editing a generated swing interface is ugly, with many casts for components
+* Overhead from reading and parsing an xml document can lead to slower start (UI should be just as responsive once loaded however)
+
 ## Planned Features For V1
 1. "Full" support for FlowLayouts and BorderLayouts (the layouts I use most often)
 2. JLabels, JButtons, JTextFields, JTextAreas supported
