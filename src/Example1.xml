@@ -14,7 +14,7 @@
                 </FlowLayout>
                 <FlowLayout>
                     <JButton action="do" name="wee">
-                        Push Me
+                        Push
                     </JButton>
                 </FlowLayout>
             </BoxLayout>

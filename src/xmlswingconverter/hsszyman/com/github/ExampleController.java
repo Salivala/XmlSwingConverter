@@ -12,7 +12,7 @@ public class ExampleController {
         actions = new HashMap<>();
         actions.put("do", e -> {System.out.println("Example action");});
         //XmlSwingConverter converter = new XmlSwingConverter(Paths.get("./src", "Example1.xml"), actions);
-        XmlSwingConverter converter = new XmlSwingConverter(Paths.get("./src", "Example2.xml"), actions);
+        XmlSwingPage page = XmlSwingConverter.getNewXmlSwingPage(Paths.get("./src", "Example1.xml"), actions);
     }
 
     public static void main(String[] args) {
