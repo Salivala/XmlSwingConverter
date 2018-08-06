@@ -1,27 +1,10 @@
 <XSP title="example1" size="300x500">
-    <BorderLayout>
-        <BorderLayout.NORTH>
-            <BorderLayout>
-                <BorderLayout.NORTH>
-                    <FlowLayout>
-                        <JLabel>Test</JLabel>
-                    </FlowLayout>
-                </BorderLayout.NORTH>
-                <BorderLayout.CENTER>
-                    <JLabel>
-                        Another test
-                    </JLabel>
-                </BorderLayout.CENTER>
-            </BorderLayout>
-        </BorderLayout.NORTH>
-        <BorderLayout.CENTER>
-            <BorderLayout>
-                <BorderLayout.NORTH>
-                    <JLabel>
-                    test
-                    </JLabel>
-                </BorderLayout.NORTH>
-            </BorderLayout>
-        </BorderLayout.CENTER>
-    </BorderLayout>
+    <FlowLayout>
+        <JButton>
+            alright
+        </JButton>
+        <JLabel>
+            Interesting
+        </JLabel>
+    </FlowLayout>
 </XSP>

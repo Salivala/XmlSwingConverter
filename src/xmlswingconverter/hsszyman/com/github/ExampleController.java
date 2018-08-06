@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import static java.util.stream.Collectors.*;
 
-import static xmlswingconverter.hsszyman.com.github.XmlSwingConverter.getNewXmlSwingPage;
+//import static xmlswingconverter.hsszyman.com.github.XmlSwingConverter.getNewXmlSwingPage;
 import static java.nio.file.Paths.get;
 
 public class ExampleController {
@@ -21,7 +21,8 @@ public class ExampleController {
     private ExampleController() {
         actions = new HashMap<>();
         actions.put("do", e -> {System.out.println("Example action");});
-        XmlSwingPage page = getNewXmlSwingPage(get("./src", "Example2.xml"), actions);
+        XmlSwingConverter c= new XmlSwingConverter();
+        XmlSwingPage p = c.getNewXmlSwingPage(get("./src", "Example1.xml"), actions);
     }
 
     public static void main(String[] args) {

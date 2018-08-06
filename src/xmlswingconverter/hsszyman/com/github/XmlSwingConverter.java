@@ -17,7 +17,9 @@ import java.util.Map;
 import java.util.function.*;
 
 public class XmlSwingConverter {
-    public static XmlSwingPage getNewXmlSwingPage(Path xmlPath, Map<String, ActionListener> actions) {
+
+    private XSBorderLayout borderLayoutDelegate = new XSBorderLayout();
+    public XmlSwingPage getNewXmlSwingPage(Path xmlPath, Map<String, ActionListener> actions) {
         File xmlFile = xmlPath.toFile();
         Document xmlDoc = getXmlDocument(xmlFile);
         XmlSwingPage page = new XmlSwingPage();
@@ -37,11 +39,12 @@ public class XmlSwingConverter {
         return page;
     }
 
-    private static Container parseElementAsContainer(Element currentParentElem, XmlSwingPage xsp) {
+    Container parseElementAsContainer(Element currentParentElem, XmlSwingPage xsp) {
         String s = currentParentElem.getTagName();
         switch (s) {
             case "BorderLayout":
-                return getBorderLayoutPanel(currentParentElem, xsp);
+                //return getBorderLayoutPanel(currentParentElem, xsp);
+                return borderLayoutDelegate.parseElementAsContainer(currentParentElem, xsp);
             case "FlowLayout":
                 return getFlowLayoutPanel(currentParentElem, xsp);
             case "BoxLayout":
@@ -65,7 +68,7 @@ public class XmlSwingConverter {
     /**
      * Configure JFrame using common defaults and XML Attributes from parent node
      */
-    private static void configureFrame(XmlSwingPage page, Document xmlDoc) {
+    private void configureFrame(XmlSwingPage page, Document xmlDoc) {
         String frameSize = xmlDoc.getDocumentElement().getAttribute("size");
 
         if (!frameSize.equals("")) {
@@ -83,33 +86,17 @@ public class XmlSwingConverter {
      * @param elem
      * @return
      */
-    private static JScrollPane getJTree(Element elem, XmlSwingPage xsp) {
-        JTree tree = new JTree(getTreeNode(elem, new DefaultMutableTreeNode(elem.getAttribute("title"))));
+    private JScrollPane getJTree(Element elem, XmlSwingPage xsp) {
+        JTree tree = new JTree();
         xsp.setTree(elem.getAttribute("name"), tree);
         return new JScrollPane(tree); // package it inside of a scrollpane
-    }
-
-    private static DefaultMutableTreeNode getTreeNode(Element elem, DefaultMutableTreeNode node) {
-        invokeOnChildElements(elem, node, (currElem, currNode) -> {
-            if (currElem.getTagName().equalsIgnoreCase("node")) {
-                DefaultMutableTreeNode newNode = getTreeNode(currElem, new DefaultMutableTreeNode(currElem.getAttribute("title")));
-                currNode.add(newNode);
-            }
-            else if (currElem.getTagName().equalsIgnoreCase("content")) {
-                String text = (currElem.getFirstChild() instanceof Text) ? ((Text) currElem.getFirstChild()).getData().trim() : "";
-                if (!text.equals("")) {
-                    currNode.add(new DefaultMutableTreeNode(text));
-                }
-            }
-        });
-        return node;
     }
     /**
      *
      * @param elem
      * @return
      */
-    private static JTextField getJTextField(Element elem, XmlSwingPage xsp) {
+    private JTextField getJTextField(Element elem, XmlSwingPage xsp) {
         Text textNode = (Text) elem.getFirstChild();
         JTextField field = new JTextField();
         field.setText(textNode.getData().trim());
@@ -127,7 +114,7 @@ public class XmlSwingConverter {
      * @param elem : Current element in the DOM
      * @return a new JList
      */
-    private static JList getJList(Element elem, XmlSwingPage xsp) {
+    private JList getJList(Element elem, XmlSwingPage xsp) {
         JList<String> list = new JList<>();
         DefaultListModel<String> listModel = new DefaultListModel<>();
         list.setModel(listModel);
@@ -146,7 +133,7 @@ public class XmlSwingConverter {
      * @param elem
      * @return
      */
-    private static JLabel getJLabel(Element elem, XmlSwingPage xsp) {
+    private JLabel getJLabel(Element elem, XmlSwingPage xsp) {
         Text textNode = (Text) elem.getFirstChild();
         JLabel label = new JLabel(textNode.getData().trim());
         xsp.setLabel(elem.getAttribute("name"), label);
@@ -157,7 +144,7 @@ public class XmlSwingConverter {
      * @param elem : current element
      * @return button that was produced
      */
-    private static JButton getJButton(Element elem, XmlSwingPage xsp) {
+    private JButton getJButton(Element elem, XmlSwingPage xsp) {
         JButton button = new JButton();
         String methodName = elem.getAttribute("action");
         Text textNode = (Text) elem.getFirstChild();
@@ -173,7 +160,7 @@ public class XmlSwingConverter {
      * @param currentParentElem : current Element in the dom
      * @return new Jpanel container a border layout
      */
-    private static JPanel getBorderLayoutPanel(Element currentParentElem, XmlSwingPage xsp) {
+    private JPanel getBorderLayoutPanel(Element currentParentElem, XmlSwingPage xsp) {
         JPanel panel = new JPanel();
         panel.setVisible(true);
         panel.setLayout(new BorderLayout());
@@ -192,7 +179,7 @@ public class XmlSwingConverter {
         return panel;
     }
 
-    private static JPanel getFlowLayoutPanel(Element currentParentElem, XmlSwingPage xsp) {
+    private JPanel getFlowLayoutPanel(Element currentParentElem, XmlSwingPage xsp) {
         JPanel panel = new JPanel();
         FlowLayout layout = new FlowLayout();
         panel.setLayout(new FlowLayout());
@@ -203,7 +190,7 @@ public class XmlSwingConverter {
         return panel;
     }
 
-    private static JPanel getBoxLayoutPanel(Element currentParentElem, XmlSwingPage xsp) {
+    private JPanel getBoxLayoutPanel(Element currentParentElem, XmlSwingPage xsp) {
         JPanel panel = new JPanel();
         String layoutOrientation = currentParentElem.getAttribute("orientation");
         BoxLayout layout;
@@ -230,7 +217,7 @@ public class XmlSwingConverter {
      * @param subject subject that is worked on through the lambda
      * @param func : lambda representing the operation to be done inside the for loop
      */
-    private static <T> void invokeOnChildElements(Element elem, T subject, BiConsumer<Element, T> func) {
+    private <T> void invokeOnChildElements(Element elem, T subject, BiConsumer<Element, T> func) {
         NodeList nodes = elem.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             if (nodes.item(i) instanceof Element) {
@@ -243,7 +230,7 @@ public class XmlSwingConverter {
     /**
      * @param xmlFile : file to generate interface from
      */
-    private static Document getXmlDocument(File xmlFile) {
+    private Document getXmlDocument(File xmlFile) {
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
         Document xmlDoc = null;
         try {
