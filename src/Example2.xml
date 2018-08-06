@@ -1,40 +1,17 @@
 <!-- Experimenting with JTree -->
 <XSP title="JTree Example" size="300x300">
     <BorderLayout>
-        <BorderLayout.SOUTH>
-            <BoxLayout>
-                <JTree title="wow">
-                    <Node title="home">
-                        <Content>wow</Content>
-                    </Node>
-                </JTree>
-            </BoxLayout>
-        </BorderLayout.SOUTH>
         <BorderLayout.NORTH>
-            <BoxLayout>
-                <JButton>
-                    buttons
-                </JButton>
-                <JLabel columns="9">
-                    test
-                </JLabel>
-            </BoxLayout>
+            <JLabel name="hi">
+                wow
+            </JLabel>
         </BorderLayout.NORTH>
-        <BorderLayout.CENTER>
-            <JTree title="tree" name="tree">
-                <Node title="thing">
-                    <Node title="bing">
-                    </Node>
-                    <Node title="bing">
-                        <Node title="bing">
-                        </Node>
-                    </Node>
-
-                </Node>
-                <Node title="thing">
-                    <Node title="bing"></Node>
-                </Node>
-            </JTree>
-        </BorderLayout.CENTER>
+        <BorderLayout.SOUTH>
+            <FlowLayout>
+                <JLabel name="wow">
+                    cool
+                </JLabel>
+            </FlowLayout>
+        </BorderLayout.SOUTH>
     </BorderLayout>
 </XSP>

@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.function.*;
 
 public class XmlSwingConverter {
     public static XmlSwingPage getNewXmlSwingPage(Path xmlPath, Map<String, ActionListener> actions) {
@@ -198,6 +199,7 @@ public class XmlSwingConverter {
         invokeOnChildElements(currentParentElem, panel, (elem, currContainer) -> {
             currContainer.add(parseElementAsContainer(elem, xsp));
         });
+
         return panel;
     }
 
@@ -228,12 +230,12 @@ public class XmlSwingConverter {
      * @param subject subject that is worked on through the lambda
      * @param func : lambda representing the operation to be done inside the for loop
      */
-    private static <T> void invokeOnChildElements(Element elem, T subject, ChildElemIterator<T> func) {
+    private static <T> void invokeOnChildElements(Element elem, T subject, BiConsumer<Element, T> func) {
         NodeList nodes = elem.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             if (nodes.item(i) instanceof Element) {
                 Element subjectElem = ((Element) nodes.item(i));
-                func.elemIteratorMethod(subjectElem, subject);
+                func.accept(subjectElem, subject);
             }
         }
     }
