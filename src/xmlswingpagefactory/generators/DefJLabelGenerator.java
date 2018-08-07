@@ -7,7 +7,7 @@ import xmlswingpagefactory.interfaces.JLabelGenerator;
 
 import javax.swing.*;
 
-public class DefaultJLabelGenerator implements JLabelGenerator {
+public class DefJLabelGenerator implements JLabelGenerator {
     @Override
     public JLabel generateJLabel(Element elem, XmlSwingPage xsp) {
         Text textNode = (Text) elem.getFirstChild();

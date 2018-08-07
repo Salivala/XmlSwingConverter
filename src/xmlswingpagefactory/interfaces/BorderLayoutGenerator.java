@@ -6,6 +6,6 @@ import xmlswingpagefactory.XmlSwingPage;
 
 import javax.swing.*;
 
-public interface FlowLayoutPanelGenerator {
-    JPanel generateFlowLayoutPanel(Element currentParentElem, XmlSwingPage xsp, ConverterSuite delegates );
+public interface BorderLayoutGenerator {
+    JPanel generateBorderLayoutPanel(Element elem, XmlSwingPage xsp, ConverterSuite delegates);
 }

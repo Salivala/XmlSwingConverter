@@ -13,6 +13,10 @@ public class DefaultTagRouter implements TagRouter {
         switch (s) {
             case "FlowLayout":
                 return delegates.flowLayoutPanelGen.generateFlowLayoutPanel(currentParentElem, xsp, delegates);
+            case "BorderLayout":
+                return delegates.borderLayoutGenerator.generateBorderLayoutPanel(currentParentElem, xsp, delegates);
+            case "BoxLayout":
+                return delegates.boxLayoutGenerator.generateBoxLayoutPanel(currentParentElem, xsp, delegates);
             case "JButton":
                 return delegates.jButtonGenerator.generateJButton(currentParentElem,xsp);
             case "JLabel":

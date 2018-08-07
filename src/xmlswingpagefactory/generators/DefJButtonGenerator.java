@@ -10,7 +10,7 @@ import javax.swing.*;
 /**
  * Default JButton generator responsible for a standard button
  */
-public class DefaultJButtonGenerator implements JButtonGenerator {
+public class DefJButtonGenerator implements JButtonGenerator {
     @Override
     public JButton generateJButton(Element elem, XmlSwingPage xsp) {
         JButton button = new JButton();

@@ -1,12 +1,7 @@
 package xmlswingpagefactory;
 
-import xmlswingpagefactory.generators.DefaultFlowLayoutPanelGenerator;
-import xmlswingpagefactory.generators.DefaultJButtonGenerator;
-import xmlswingpagefactory.generators.DefaultJLabelGenerator;
-import xmlswingpagefactory.interfaces.FlowLayoutPanelGenerator;
-import xmlswingpagefactory.interfaces.JButtonGenerator;
-import xmlswingpagefactory.interfaces.JLabelGenerator;
-import xmlswingpagefactory.interfaces.TagRouter;
+import xmlswingpagefactory.generators.*;
+import xmlswingpagefactory.interfaces.*;
 
 /**
  * Wrapper class that holds Delegates for XmlConversion Utilities, as well
@@ -15,21 +10,25 @@ import xmlswingpagefactory.interfaces.TagRouter;
 public class ConverterSuite{
     public TagRouter router;
     public JButtonGenerator jButtonGenerator;
-    public FlowLayoutPanelGenerator flowLayoutPanelGen;
+    public FlowLayoutGenerator flowLayoutPanelGen;
     public JLabelGenerator jLabelGenerator;
+    public BorderLayoutGenerator borderLayoutGenerator;
+    public BoxLayoutGenerator boxLayoutGenerator;
 
     public static class Builder {
         TagRouter router = new DefaultTagRouter();
-        FlowLayoutPanelGenerator flowLayoutPanelGenerator = new DefaultFlowLayoutPanelGenerator();
-        JButtonGenerator jButtonGenerator = new DefaultJButtonGenerator();
-        JLabelGenerator jLabelGenerator = new DefaultJLabelGenerator();
+        FlowLayoutGenerator flowLayoutPanelGenerator = new DefFlowLayoutGenerator();
+        BorderLayoutGenerator borderLayoutGenerator = new DefBoarderLayoutGenerator();
+        BoxLayoutGenerator boxLayoutGenerator = new DefBoxLayoutGenerator();
+        JButtonGenerator jButtonGenerator = new DefJButtonGenerator();
+        JLabelGenerator jLabelGenerator = new DefJLabelGenerator();
 
         public Builder routerDel(TagRouter router) {
             this.router = router;
             return this;
         }
 
-        public Builder flowLayoutDel(FlowLayoutPanelGenerator layoutPanelGenerator) {
+        public Builder flowLayoutDel(FlowLayoutGenerator layoutPanelGenerator) {
             this.flowLayoutPanelGenerator = layoutPanelGenerator;
             return this;
         }
@@ -44,6 +43,16 @@ public class ConverterSuite{
             return this;
         }
 
+        public Builder borderDel(BorderLayoutGenerator borderLayoutGenerator) {
+            this.borderLayoutGenerator = borderLayoutGenerator;
+            return this;
+        }
+
+        public Builder boxDel(BoxLayoutGenerator boxLayoutGenerator) {
+            this.boxLayoutGenerator = boxLayoutGenerator;
+            return this;
+        }
+
         public ConverterSuite build() {
             return new ConverterSuite(this);
         }
@@ -54,6 +63,8 @@ public class ConverterSuite{
         flowLayoutPanelGen = builder.flowLayoutPanelGenerator;
         jButtonGenerator = builder.jButtonGenerator;
         jLabelGenerator = builder.jLabelGenerator;
+        borderLayoutGenerator = builder.borderLayoutGenerator;
+        boxLayoutGenerator = builder.boxLayoutGenerator;
     }
 
 }
