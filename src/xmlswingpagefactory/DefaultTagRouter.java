@@ -21,6 +21,8 @@ public class DefaultTagRouter implements TagRouter {
                 return delegates.jButtonGenerator.generateJButton(currentParentElem,xsp);
             case "JLabel":
                 return delegates.jLabelGenerator.generateJLabel(currentParentElem, xsp);
+            case "JComboBox":
+                return delegates.jComboBoxGenerator.generateJComboBox(currentParentElem, xsp);
             default:
                 return new JLabel("system broke");
         }

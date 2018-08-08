@@ -8,7 +8,6 @@ import static xmlswingpagefactory.ConversionUtils.invokeOnChildElements;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.function.BiConsumer;
 
 public class DefBoarderLayoutGenerator implements BorderLayoutGenerator {
     @Override
@@ -16,6 +15,10 @@ public class DefBoarderLayoutGenerator implements BorderLayoutGenerator {
         JPanel panel = new JPanel();
         panel.setVisible(true);
         panel.setLayout(new BorderLayout());
+        String name = elem.getAttribute("name");
+        if (!name.equals("")) {
+            xsp.setPanel(name, panel);
+        }
         invokeOnChildElements(elem, panel, (currElem, currContainer) -> {
             if (currElem.getTagName().endsWith("NORTH")) {
                 currContainer.add(delegates.router.routeToContainer(
@@ -45,8 +48,15 @@ public class DefBoarderLayoutGenerator implements BorderLayoutGenerator {
                         delegates
                 ), BorderLayout.EAST);
             }
+            else if (currElem.getTagName().endsWith("CENTER")) {
+                currContainer.add(delegates.router.routeToContainer(
+                        ((Element) currElem.getChildNodes().item(1)),
+                        xsp,
+                        delegates
+                ), BorderLayout.CENTER);
+            }
         });
-        return null;
+        return panel;
     }
 
     void addToBorderLayout (String direction, JPanel panel, ConverterSuite delegates) {

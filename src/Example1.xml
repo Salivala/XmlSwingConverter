@@ -1,10 +1,27 @@
 <XSP title="example1" size="300x500">
-    <FlowLayout>
-        <JButton>
-            alright
-        </JButton>
-        <JLabel>
-            Interesting
-        </JLabel>
-    </FlowLayout>
+    <BorderLayout>
+        <BorderLayout.NORTH>
+            <FlowLayout>
+                <JLabel>
+                    TESTING
+                </JLabel>
+            </FlowLayout>
+        </BorderLayout.NORTH>
+        <BorderLayout.CENTER>
+            <FlowLayout>
+                <JComboBox name="hours">
+                </JComboBox>
+                <JComboBox name="minutes">
+                </JComboBox>
+                <JComboBox name="seconds">
+                </JComboBox>
+                <JButton>
+                    start
+                </JButton>
+                <JButton>
+                    start
+                </JButton>
+            </FlowLayout>
+        </BorderLayout.CENTER>
+    </BorderLayout>
 </XSP>

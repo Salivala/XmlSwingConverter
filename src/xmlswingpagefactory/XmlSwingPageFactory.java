@@ -32,10 +32,15 @@ public class XmlSwingPageFactory {
         //System.out.println(delegates.router.toString());
     }
 
+    /**
+     * @return new XmlSwingPage
+     */
     XmlSwingPage newXmlSwingPage() {
         XmlSwingPage xsp = new XmlSwingPage();
         Thread generateXmlSwingCompeonents = new Thread(() -> {
+            // Get the root element from the document
             Element rootElem = ((Element) xmlDoc.getDocumentElement().getChildNodes().item(1));
+            // Set the content pane of the XmlSwingPage to the result of routing the root
             xsp.getFrame().setContentPane(delegates.router.routeToContainer(rootElem, xsp, delegates));
         });
         generateXmlSwingCompeonents.start();
@@ -53,7 +58,6 @@ public class XmlSwingPageFactory {
 
     private void configureFrame(XmlSwingPage page, Document xmlDoc) {
         String frameSize = xmlDoc.getDocumentElement().getAttribute("size");
-
         if (!frameSize.equals("")) {
             int x = Integer.parseInt(frameSize.substring(0, frameSize.indexOf("x")));
             int y = Integer.parseInt(frameSize.substring(frameSize.indexOf("x") + 1), frameSize.length());

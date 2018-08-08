@@ -3,6 +3,8 @@ package xmlswingpagefactory;
 import xmlswingpagefactory.generators.*;
 import xmlswingpagefactory.interfaces.*;
 
+import javax.swing.*;
+
 /**
  * Wrapper class that holds Delegates for XmlConversion Utilities, as well
  * as provides a default set of utilities
@@ -14,6 +16,7 @@ public class ConverterSuite{
     public JLabelGenerator jLabelGenerator;
     public BorderLayoutGenerator borderLayoutGenerator;
     public BoxLayoutGenerator boxLayoutGenerator;
+    public JComboBoxGenerator jComboBoxGenerator;
 
     public static class Builder {
         TagRouter router = new DefaultTagRouter();
@@ -22,6 +25,7 @@ public class ConverterSuite{
         BoxLayoutGenerator boxLayoutGenerator = new DefBoxLayoutGenerator();
         JButtonGenerator jButtonGenerator = new DefJButtonGenerator();
         JLabelGenerator jLabelGenerator = new DefJLabelGenerator();
+        JComboBoxGenerator jComboBoxGenerator = new DefJComboBoxGenerator();
 
         public Builder routerDel(TagRouter router) {
             this.router = router;
@@ -53,6 +57,11 @@ public class ConverterSuite{
             return this;
         }
 
+        public Builder comboBoxDel(JComboBoxGenerator comboBoxGenerator) {
+            this.jComboBoxGenerator = comboBoxGenerator;
+            return this;
+        }
+
         public ConverterSuite build() {
             return new ConverterSuite(this);
         }
@@ -65,6 +74,7 @@ public class ConverterSuite{
         jLabelGenerator = builder.jLabelGenerator;
         borderLayoutGenerator = builder.borderLayoutGenerator;
         boxLayoutGenerator = builder.boxLayoutGenerator;
+        jComboBoxGenerator = builder.jComboBoxGenerator;
     }
 
 }
