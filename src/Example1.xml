@@ -1,27 +1,41 @@
-<XSP title="example1" size="300x500">
-    <BorderLayout>
-        <BorderLayout.NORTH>
-            <FlowLayout>
-                <JLabel>
-                    TESTING
-                </JLabel>
-            </FlowLayout>
-        </BorderLayout.NORTH>
-        <BorderLayout.CENTER>
-            <FlowLayout>
-                <JComboBox name="hours">
-                </JComboBox>
-                <JComboBox name="minutes">
-                </JComboBox>
-                <JComboBox name="seconds">
-                </JComboBox>
-                <JButton>
-                    start
-                </JButton>
-                <JButton>
-                    start
-                </JButton>
-            </FlowLayout>
-        </BorderLayout.CENTER>
-    </BorderLayout>
+<XSP title="example1" size="300x300">
+    <BoxLayout scroll="true" orientation="vertical">
+        <JButton>
+           ad
+        </JButton>
+        <JButton>
+            ad
+        </JButton>
+        <JButton>
+            ad
+        </JButton>
+        <JButton>
+            ad
+        </JButton>
+        <JButton>
+            ad
+        </JButton>
+        <JButton>
+            ad
+        </JButton>
+        <JButton>
+            ad
+        </JButton>
+        <JButton>
+            ad
+        </JButton>
+        <JButton>
+            ad
+        </JButton>
+        <JButton>
+            ad
+        </JButton>
+        <JButton>
+            ad
+        </JButton>
+
+        <JButton>
+            ad
+        </JButton>
+    </BoxLayout>
 </XSP>

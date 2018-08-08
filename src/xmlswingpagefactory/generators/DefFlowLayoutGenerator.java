@@ -17,7 +17,6 @@ public class DefFlowLayoutGenerator implements FlowLayoutGenerator {
         panel.setLayout(new FlowLayout());
         invokeOnChildElements(currentParentElem, panel, (elem, currContainer) -> {
             Text textNode = (Text) elem.getFirstChild();
-            System.out.println(textNode.getData().trim());
             currContainer.add(delegates.router.routeToContainer(elem, xsp, delegates));
         });
         return panel;

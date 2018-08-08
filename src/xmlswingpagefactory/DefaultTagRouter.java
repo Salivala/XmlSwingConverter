@@ -3,6 +3,7 @@ package xmlswingpagefactory;
 import org.w3c.dom.Element;
 import xmlswingpagefactory.interfaces.TagRouter;
 
+import javax.management.modelmbean.XMLParseException;
 import javax.swing.*;
 import java.awt.*;
 
@@ -23,8 +24,13 @@ public class DefaultTagRouter implements TagRouter {
                 return delegates.jLabelGenerator.generateJLabel(currentParentElem, xsp);
             case "JComboBox":
                 return delegates.jComboBoxGenerator.generateJComboBox(currentParentElem, xsp);
+            case "JList":
+                return delegates.jListGenerator.generateJList(currentParentElem, xsp);
+            case "JScrollPane":
             default:
-                return new JLabel("system broke");
+                xsp.getFrame().setVisible(false);
+                xsp.getFrame().setContentPane(new JPanel());
+                throw new Error("Element " + s + " does not exist");
         }
     }
 }

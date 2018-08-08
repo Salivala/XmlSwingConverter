@@ -17,6 +17,7 @@ public class ConverterSuite{
     public BorderLayoutGenerator borderLayoutGenerator;
     public BoxLayoutGenerator boxLayoutGenerator;
     public JComboBoxGenerator jComboBoxGenerator;
+    public JListGenerator jListGenerator;
 
     public static class Builder {
         TagRouter router = new DefaultTagRouter();
@@ -26,6 +27,7 @@ public class ConverterSuite{
         JButtonGenerator jButtonGenerator = new DefJButtonGenerator();
         JLabelGenerator jLabelGenerator = new DefJLabelGenerator();
         JComboBoxGenerator jComboBoxGenerator = new DefJComboBoxGenerator();
+        JListGenerator jListGenerator = new DefJListGenerator();
 
         public Builder routerDel(TagRouter router) {
             this.router = router;
@@ -36,29 +38,28 @@ public class ConverterSuite{
             this.flowLayoutPanelGenerator = layoutPanelGenerator;
             return this;
         }
-
         public Builder buttonDel(JButtonGenerator jButtonGenerator) {
             this.jButtonGenerator = jButtonGenerator;
             return this;
         }
-
         public Builder labelDel(JLabelGenerator jLabelGenerator) {
             this.jLabelGenerator = jLabelGenerator;
             return this;
         }
-
         public Builder borderDel(BorderLayoutGenerator borderLayoutGenerator) {
             this.borderLayoutGenerator = borderLayoutGenerator;
             return this;
         }
-
         public Builder boxDel(BoxLayoutGenerator boxLayoutGenerator) {
             this.boxLayoutGenerator = boxLayoutGenerator;
             return this;
         }
-
         public Builder comboBoxDel(JComboBoxGenerator comboBoxGenerator) {
             this.jComboBoxGenerator = comboBoxGenerator;
+            return this;
+        }
+        public Builder comboBoxDel(JListGenerator listGenerator) {
+            this.jListGenerator = listGenerator;
             return this;
         }
 
@@ -75,6 +76,7 @@ public class ConverterSuite{
         borderLayoutGenerator = builder.borderLayoutGenerator;
         boxLayoutGenerator = builder.boxLayoutGenerator;
         jComboBoxGenerator = builder.jComboBoxGenerator;
+        jListGenerator = builder.jListGenerator;
     }
 
 }

@@ -5,7 +5,8 @@ import xmlswingpagefactory.ConverterSuite;
 import xmlswingpagefactory.XmlSwingPage;
 
 import javax.swing.*;
+import java.awt.*;
 
 public interface BoxLayoutGenerator {
-    JPanel generateBoxLayoutPanel(Element elem, XmlSwingPage xsp, ConverterSuite delegates);
+    Container generateBoxLayoutPanel(Element elem, XmlSwingPage xsp, ConverterSuite delegates);
 }

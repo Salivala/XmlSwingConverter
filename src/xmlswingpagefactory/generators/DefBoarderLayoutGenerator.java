@@ -11,7 +11,7 @@ import java.awt.*;
 
 public class DefBoarderLayoutGenerator implements BorderLayoutGenerator {
     @Override
-    public JPanel generateBorderLayoutPanel(Element elem, XmlSwingPage xsp, ConverterSuite delegates) {
+    public Container generateBorderLayoutPanel(Element elem, XmlSwingPage xsp, ConverterSuite delegates) {
         JPanel panel = new JPanel();
         panel.setVisible(true);
         panel.setLayout(new BorderLayout());
@@ -20,45 +20,25 @@ public class DefBoarderLayoutGenerator implements BorderLayoutGenerator {
             xsp.setPanel(name, panel);
         }
         invokeOnChildElements(elem, panel, (currElem, currContainer) -> {
-            if (currElem.getTagName().endsWith("NORTH")) {
-                currContainer.add(delegates.router.routeToContainer(
-                        ((Element) currElem.getChildNodes().item(1)),
-                        xsp,
-                        delegates
-                ), BorderLayout.NORTH);
-            }
-            else if (currElem.getTagName().endsWith("SOUTH")) {
-                currContainer.add(delegates.router.routeToContainer(
-                        ((Element) currElem.getChildNodes().item(1)),
-                        xsp,
-                        delegates
-                ), BorderLayout.SOUTH);
-            }
-            else if (currElem.getTagName().endsWith("WEST")) {
-                currContainer.add(delegates.router.routeToContainer(
-                        ((Element) currElem.getChildNodes().item(1)),
-                        xsp,
-                        delegates
-                ), BorderLayout.WEST);
-            }
-            else if (currElem.getTagName().endsWith("EAST")) {
-                currContainer.add(delegates.router.routeToContainer(
-                        ((Element) currElem.getChildNodes().item(1)),
-                        xsp,
-                        delegates
-                ), BorderLayout.EAST);
-            }
-            else if (currElem.getTagName().endsWith("CENTER")) {
-                currContainer.add(delegates.router.routeToContainer(
-                        ((Element) currElem.getChildNodes().item(1)),
-                        xsp,
-                        delegates
-                ), BorderLayout.CENTER);
-            }
+            if (currElem.getTagName().endsWith("NORTH"))
+                addToLayout(currContainer, currElem, xsp, delegates, BorderLayout.NORTH);
+            else if (currElem.getTagName().endsWith("SOUTH"))
+                addToLayout(currContainer, currElem, xsp, delegates, BorderLayout.SOUTH);
+            else if (currElem.getTagName().endsWith("WEST"))
+                addToLayout(currContainer, currElem, xsp, delegates, BorderLayout.WEST);
+            else if (currElem.getTagName().endsWith("EAST"))
+                addToLayout(currContainer, currElem, xsp, delegates, BorderLayout.EAST);
+            else if (currElem.getTagName().endsWith("CENTER"))
+                addToLayout(currContainer, currElem, xsp, delegates, BorderLayout.CENTER);
         });
-        return panel;
+        return elem.getAttribute("scroll").equals("true") ? new JScrollPane(panel) : panel;
     }
 
-    void addToBorderLayout (String direction, JPanel panel, ConverterSuite delegates) {
+    private void addToLayout(Container container, Element elem, XmlSwingPage xsp, ConverterSuite delegates, String direction) {
+        container.add(delegates.router.routeToContainer(
+                ((Element) elem.getChildNodes().item(1)),
+                xsp,
+                delegates
+        ), direction);
     }
 }

@@ -7,10 +7,11 @@ import xmlswingpagefactory.interfaces.BoxLayoutGenerator;
 import static xmlswingpagefactory.ConversionUtils.invokeOnChildElements;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class DefBoxLayoutGenerator implements BoxLayoutGenerator {
     @Override
-    public JPanel generateBoxLayoutPanel(Element elem, XmlSwingPage xsp, ConverterSuite delegates) {
+    public Container generateBoxLayoutPanel(Element elem, XmlSwingPage xsp, ConverterSuite delegates) {
         JPanel panel = new JPanel();
         String layoutOrientation = elem.getAttribute("orientation");
         BoxLayout layout;
@@ -28,6 +29,6 @@ public class DefBoxLayoutGenerator implements BoxLayoutGenerator {
         invokeOnChildElements(elem, panel, (currElem, currPanel) -> {
             currPanel.add(delegates.router.routeToContainer(currElem, xsp, delegates));
         });
-        return panel;
+        return elem.getAttribute("scroll").equals("true") ? new JScrollPane(panel) : panel;
     }
 }

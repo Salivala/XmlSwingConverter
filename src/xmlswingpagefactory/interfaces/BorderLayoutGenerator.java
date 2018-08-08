@@ -5,7 +5,8 @@ import xmlswingpagefactory.ConverterSuite;
 import xmlswingpagefactory.XmlSwingPage;
 
 import javax.swing.*;
+import java.awt.*;
 
 public interface BorderLayoutGenerator {
-    JPanel generateBorderLayoutPanel(Element elem, XmlSwingPage xsp, ConverterSuite delegates);
+    Container generateBorderLayoutPanel(Element elem, XmlSwingPage xsp, ConverterSuite delegates);
 }

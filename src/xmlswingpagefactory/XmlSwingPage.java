@@ -1,5 +1,7 @@
 package xmlswingpagefactory;
 
+import xmlswingpagefactory.interfaces.JListGenerator;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
@@ -22,6 +24,7 @@ public class XmlSwingPage {
     private Map<String, JTextArea> textAreaMap = new HashMap<>();
     private Map<String, JLabel> labelMap = new HashMap<>();
     private Map<String, JComboBox<String>> comboBoxMap = new HashMap<>();
+    private Map<String, JList<String>> listMap = new HashMap<>();
 
     /**
      * Maps that contain non-terminal Swing Components (components that can contain other components)
@@ -80,8 +83,13 @@ public class XmlSwingPage {
     public void setPanel(String panelName, JPanel panel) {
         this.panelMap.put(panelName, panel);
     }
-
     public JPanel getPanel(String panelname) {
         return this.panelMap.get(panelname);
+    }
+    public void setList(String listName, JList<String> list) {
+        listMap.put(listName, list);
+    }
+    public JList<String> getList(String listName) {
+        return listMap.get(listName);
     }
 }
